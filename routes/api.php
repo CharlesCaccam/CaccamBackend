@@ -1,8 +1,10 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\AuthController;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+Route::get('/token-test', function() {
+    // This finds a user OR creates a temporary one so it doesn't crash
+    $user = \App\Models\User::first() ?? \App\Models\User::factory()->create();
+    
+    return $user->createToken('test')->plainTextToken;
+});
