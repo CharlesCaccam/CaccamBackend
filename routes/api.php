@@ -11,6 +11,7 @@ Route::post('/login', [AuthController::class, 'login']);
 
 // Protected routes
 Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/courses', [CourseController::class, 'index']);
     Route::get('/dashboard/summary', [DashboardController::class, 'summary']);
     Route::get('/dashboard/enrollment-trends', [DashboardController::class, 'enrollmentTrends']);
     Route::get('/dashboard/course-distribution', [DashboardController::class, 'courseDistribution']);

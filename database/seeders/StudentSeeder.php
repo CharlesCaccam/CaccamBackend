@@ -1,8 +1,8 @@
 <?php
 namespace Database\Seeders;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 use App\Models\Student;
+
 class StudentSeeder extends Seeder
 {
     public function run(): void
@@ -21,7 +21,6 @@ class StudentSeeder extends Seeder
                         'ABCOM','BSARCH','BSCRIM','BSPHRM'];
         $genders = ['Male','Female'];
 
-        $students = [];
         for ($i = 1; $i <= 500; $i++) {
             $firstName = $firstNames[array_rand($firstNames)];
             $lastName  = $lastNames[array_rand($lastNames)];
@@ -29,20 +28,20 @@ class StudentSeeder extends Seeder
             $month = rand(6, 11);
             $day = rand(1, 28);
 
-            $students[] = [
-                'student_id'       => 'STU-' . str_pad($i, 4, '0', STR_PAD_LEFT),
-                'first_name'       => $firstName,
-                'last_name'        => $lastName,
-                'gender'           => $genders[array_rand($genders)],
-                'email'            => strtolower($firstName . '.' . $lastName . $i) . '@school.edu.ph',
-                'course_code'      => $courseCodes[array_rand($courseCodes)],
-                'year_level'       => rand(1, 4),
-                'municipality'     => $municipalities[array_rand($municipalities)],
-                'enrollment_date'  => "$year-" . str_pad($month, 2, '0', STR_PAD_LEFT) . "-$day",
-                'created_at' => \Carbon\Carbon::create($year, $month, $day),
-                'updated_at' => \Carbon\Carbon::create($year, $month, $day),
-            ];
+            $studentId = 'STU-' . str_pad($i, 4, '0', STR_PAD_LEFT);
+            Student::firstOrCreate(
+                ['student_id' => $studentId],
+                [
+                    'first_name'      => $firstName,
+                    'last_name'       => $lastName,
+                    'gender'          => $genders[array_rand($genders)],
+                    'email'           => strtolower($firstName . '.' . $lastName . $i) . '@school.edu.ph',
+                    'course_code'     => $courseCodes[array_rand($courseCodes)],
+                    'year_level'      => rand(1, 4),
+                    'municipality'    => $municipalities[array_rand($municipalities)],
+                    'enrollment_date' => "$year-" . str_pad($month, 2, '0', STR_PAD_LEFT) . "-$day",
+                ]
+            );
         }
-        Student::insert($students);
     }
 }

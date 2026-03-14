@@ -1,7 +1,7 @@
 <?php
 namespace Database\Seeders;
+use App\Models\Course;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class CourseSeeder extends Seeder
 {
@@ -31,15 +31,15 @@ class CourseSeeder extends Seeder
         ];
 
         foreach ($courses as $c) {
-            DB::table('courses')->insert([
-                'course_code' => $c[0],
-                'course_name' => $c[1],
-                'department'  => $c[2],
-                'units'       => $c[3],
-                'slots'       => $c[4],
-                'created_at'  => now(),
-                'updated_at'  => now(),
-            ]);
+            Course::firstOrCreate(
+                ['course_code' => $c[0]],
+                [
+                    'course_name' => $c[1],
+                    'department'  => $c[2],
+                    'units'       => $c[3],
+                    'slots'       => $c[4],
+                ]
+            );
         }
     }
 }
